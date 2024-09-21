@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Institution Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 class="text-2xl font-bold mb-6 text-center">Educational Institution Login</h1>
+        <form id="loginForm" onsubmit="return validateForm()">
+            <div class="mb-4">
+                <label for="userType" class="block mb-2">I want to join as a:</label>
+                <select id="userType" class="w-full p-2 border rounded" onchange="showAdditionalFields()">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="guest">Guest</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="username" class="block mb-2">Username:</label>
+                <input type="text" id="username" class="w-full p-2 border rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block mb-2">Password:</label>
+                <input type="password" id="password" class="w-full p-2 border rounded" required>
+            </div>
+            <div id="studentFields" class="hidden">
+                <div class="mb-4">
+                    <label for="studentId" class="block mb-2">Student ID:</label>
+                    <input type="text" id="studentId" class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="grade" class="block mb-2">Grade Level:</label>
+                    <input type="number" id="grade" class="w-full p-2 border rounded" min="1" max="12">
+                </div>
+            </div>
+            <div id="teacherFields" class="hidden">
+                <div class="mb-4">
+                    <label for="employeeId" class="block mb-2">Employee ID:</label>
+                    <input type="text" id="employeeId" class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="subject" class="block mb-2">Subject:</label>
+                    <input type="text" id="subject" class="w-full p-2 border rounded">
+                </div>
+            </div>
+            <div id="guestFields" class="hidden">
+                <div class="mb-4">
+                    <label for="reason" class="block mb-2">Reason for Visit:</label>
+                    <textarea id="reason" class="w-full p-2 border rounded" rows="3"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Log In</button>
+        </form>
+    </div>
+
+    <script>
+        function showAdditionalFields() {
+            const userType = document.getElementById('userType').value;
+            document.getElementById('studentFields').classList.add('hidden');
+            document.getElementById('teacherFields').classList.add('hidden');
+            document.getElementById('guestFields').classList.add('hidden');
+            document.getElementById(userType + 'Fields').classList.remove('hidden');
+        }
+
+        function validateForm() {
+            const userType = document.getElementById('userType').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username.length < 5) {
+                alert('Username must be at least 5 characters long');
+                return false;
+            }
+
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return false;
+            }
+
+            if (userType === 'student') {
+                const studentId = document.getElementById('studentId').value;
+                const grade = document.getElementById('grade').value;
+                if (!studentId || !grade) {
+                    alert('Please fill in all student fields');
+                    return false;
+                }
+            } else if (userType === 'teacher') {
+                const employeeId = document.getElementById('employeeId').value;
+                const subject = document.getElementById('subject').value;
+                if (!employeeId || !subject) {
+                    alert('Please fill in all teacher fields');
+                    return false;
+                }
+            } else if (userType === 'guest') {
+                const reason = document.getElementById('reason').value;
+                if (!reason) {
+                    alert('Please provide a reason for your visit');
+                    return false;
+                }
+            }
+
+            alert('Form submitted successfully!');
+            return true;
+        }
+
+        // Show/hide fields on page load
+        showAdditionalFields();
+    </script>
+</body>
+</html>
